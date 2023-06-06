@@ -1,6 +1,6 @@
 <script>
 import useVuelidate from '@vuelidate/core'
-import { required, alpha, maxLength, numeric, minValue, url, helpers } from '@vuelidate/validators'
+import { required, alphaNum, maxLength, numeric, minValue, url, helpers } from '@vuelidate/validators'
 
 export default {
   name: 'CreateModal',
@@ -24,7 +24,7 @@ export default {
     return {
       title: {
         required: helpers.withMessage('Título não pode ser vázio', required),
-        alpha: helpers.withMessage('Só aceita letras', alpha), 
+        alphaNum: helpers.withMessage('Só aceita letras', alphaNum), 
         maxLength: helpers.withMessage('Máximo de 64 caracteres', maxLength(64))
       },
       price: {
@@ -46,6 +46,12 @@ export default {
 
     submit() {
       this.v$.$touch();
+      if (!this.v$.$error) {
+        // Fecha o modal após o submit
+        setTimeout( () => {
+          this.OpenClose = false
+        }, 100)
+      }
     },
 
     async createFood(e) {
@@ -64,6 +70,15 @@ export default {
         headers: { "Content-Type": "application/json", "Accept": "application/json"},
         body: dataJson
       });
+
+
+      // Limpando os campos
+      this.title = null
+      this.price = null
+      this.imgUrl = null
+
+      // Limpando as mensagens de erro do Vuelidate
+      this.v$.$reset();
     },
   },
 
