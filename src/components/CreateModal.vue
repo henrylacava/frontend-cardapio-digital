@@ -8,8 +8,8 @@ export default {
   props: {
     visible: Boolean,
   },
-    
-  data () {
+
+  data() {
     return {
       v$: useVuelidate(),
 
@@ -25,16 +25,16 @@ export default {
     return {
       title: {
         required: helpers.withMessage('Título não pode ser vázio', required),
-        alphaNum: helpers.withMessage('Só aceita letras', alphaNum), 
+        alphaNum: helpers.withMessage('Só aceita letras', alphaNum),
         maxLength: helpers.withMessage('Máximo de 64 caracteres', maxLength(64))
       },
       price: {
-        required: helpers.withMessage('Preço não pode ser vázio', required), 
+        required: helpers.withMessage('Preço não pode ser vázio', required),
         numeric: helpers.withMessage('Só aceita números', numeric),
         minValue: helpers.withMessage('Não pode valores negativos', minValue(0))
       },
       imgUrl: {
-        required: helpers.withMessage('URL não pode ser vázio', required), 
+        required: helpers.withMessage('URL não pode ser vázio', required),
         url: helpers.withMessage('Precisa ser uma URL válida', url)
       }
     }
@@ -48,15 +48,20 @@ export default {
     submit() {
       this.v$.$touch();
       if (!this.v$.$error) {
-        // Fecha o modal após o submit
-        setTimeout( () => {
+        setTimeout(() => {
           this.OpenClose = false
+
+          this.title = ''
+          this.price = ''
+          this.imgUrl = ''
+
+          this.v$.$reset();
         }, 100)
       }
     },
 
-    async submitForm(e) {   
-      
+    async submitForm(e) {
+
       e.preventDefault();
 
       const data = {
@@ -67,16 +72,6 @@ export default {
 
       const store = dataFoodStore();
       store.createFood(data)
-
-
-      // Limpa os campos
-      this.title = ''
-      this.price = ''
-      this.imgUrl = ''
-
-      // Reseta as mensagens de erro do Vuelidate
-      this.v$.$reset();
-
     },
   },
 
@@ -104,24 +99,24 @@ export default {
           <div class="modal-body">
             <div class="form-group">
               <label class="fw-bold mb-2" for="title">Título</label>
-              <input type="text" name="title" v-model="title" 
-              :class="v$.title.$error === true ? 'form-control is-invalid' : 'form-control'" placeholder="Título">
+              <input type="text" name="title" v-model="title"
+                :class="v$.title.$error === true ? 'form-control is-invalid' : 'form-control'" placeholder="Título">
             </div>
             <div class="p-1 text-danger" v-for="error of v$.title.$errors" :key="error.$uid">
               {{ error.$message }}
             </div>
             <div class="form-group mt-4">
               <label class="fw-bold mb-2" for="price">Preço</label>
-              <input type="text" name="price" v-model="price" 
-              :class="v$.price.$error === true ? 'form-control is-invalid' : 'form-control'" placeholder="Preço">
+              <input type="text" name="price" v-model="price"
+                :class="v$.price.$error === true ? 'form-control is-invalid' : 'form-control'" placeholder="Preço">
             </div>
             <div class="p-1 text-danger" v-for="error of v$.price.$errors" :key="error.$uid">
               {{ error.$message }}
             </div>
             <div class="form-group mt-4">
               <label class="fw-bold mb-2" for="imgUrl">URL da imagem</label>
-              <input type="text" name="imgUrl" v-model="imgUrl" 
-              :class="v$.imgUrl.$error === true ? 'form-control is-invalid' : 'form-control'" placeholder="URL">
+              <input type="text" name="imgUrl" v-model="imgUrl"
+                :class="v$.imgUrl.$error === true ? 'form-control is-invalid' : 'form-control'" placeholder="URL">
             </div>
             <div class="p-1 text-danger" v-for="error of v$.imgUrl.$errors" :key="error.$uid">
               {{ error.$message }}
