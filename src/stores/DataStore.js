@@ -32,7 +32,6 @@ export const dataFoodStore = defineStore('data', {
         body: dataJson
       });
 
-      console.log(newFood)
       this.fetchFoods();
     },
   }
