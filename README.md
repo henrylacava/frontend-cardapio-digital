@@ -2,6 +2,11 @@
 
 Este projeto é um simples simples protótipo de um Cardápio Digital. A aplicação foi desenvolvida usando **Vue**.
 
+<h1 align="center">
+    <img src="./public/home.png" width="300"/>
+    <img src="./public/create.png" width="300"/>
+</h1>
+
 ## Requisitos
 
 Antes de iniciar, você deve ter o Node.js e o NPM instalados em sua máquina.
