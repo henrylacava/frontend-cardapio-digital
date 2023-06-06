@@ -3,6 +3,6 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.js'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import store from './store'
+import { createPinia } from 'pinia'
 
-createApp(App).use(store).use(bootstrap).mount('#app')
+createApp(App).use(createPinia()).use(bootstrap).mount('#app')

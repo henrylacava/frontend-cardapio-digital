@@ -1,6 +1,7 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, alphaNum, maxLength, numeric, minValue, url, helpers } from '@vuelidate/validators'
+import { dataFoodStore } from './../stores/DataStore.js'
 
 export default {
   name: 'CreateModal',
@@ -54,7 +55,8 @@ export default {
       }
     },
 
-    async createFood(e) {
+    async submitForm(e) {   
+      
       e.preventDefault();
 
       const data = {
@@ -63,22 +65,18 @@ export default {
         imgUrl: this.imgUrl
       }
 
-      const dataJson = JSON.stringify(data);
-
-      await fetch("http://127.0.0.1:8000/api/foods", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json"},
-        body: dataJson
-      });
+      const store = dataFoodStore();
+      store.createFood(data)
 
 
-      // Limpando os campos
-      this.title = null
-      this.price = null
-      this.imgUrl = null
+      // Limpa os campos
+      this.title = ''
+      this.price = ''
+      this.imgUrl = ''
 
-      // Limpando as mensagens de erro do Vuelidate
+      // Reseta as mensagens de erro do Vuelidate
       this.v$.$reset();
+
     },
   },
 
@@ -102,7 +100,7 @@ export default {
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form @submit="createFood">
+        <form @submit="submitForm">
           <div class="modal-body">
             <div class="form-group">
               <label class="fw-bold mb-2" for="title">Título</label>

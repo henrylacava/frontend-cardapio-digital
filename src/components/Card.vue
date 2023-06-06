@@ -1,29 +1,26 @@
 <script>
+import { dataFoodStore } from '../stores/DataStore';
+
 export default {
   name: 'Card',
-  data () {
-    return {
-      foods: [],
-    }
+  computed: {
+    foods() {
+      const store = dataFoodStore();
+      return store.foods;
+    },
   },
-  methods: {
-    async fetchFoods() {
-      const req = await fetch("http://127.0.0.1:8000/api/foods");
-      const data = await req.json();
 
-      this.foods = data;
+  methods: {
+    async deleteFood(id) {
+      const store = dataFoodStore();
+      store.deleteFood(id)
     },
 
-    async deleteFood(id) {
-      const req = await fetch(`http://127.0.0.1:8000/api/foods/${id}`, {
-        method: "DELETE"
-      });
 
-      this.fetchFoods();
-    }
   },
   mounted() {
-    this.fetchFoods();
+    const store = dataFoodStore();
+    store.fetchFoods();
   }
 }
 </script>
